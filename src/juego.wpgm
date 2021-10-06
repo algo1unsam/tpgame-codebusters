@@ -1,8 +1,26 @@
 import wollok.game.*
-import pepita.*
+import player.*
+import portal.*
 
 program juego {
-	game.title("Juego Base")
-	game.addVisual(pepita)
-	game.start()
+	game.title("El juego de la papa")
+	
+	game.height(11)
+	game.width(11)
+	game.ground("ground.png")
+	
+	game.addVisualCharacter(player) 	
+	
+	const portal1=new ParejaPortales(position=game.at(0,1),position2=game.at(9,9))
+	portal1.crearPortales()
+	
+	game.whenCollideDo(player, { elemento => 
+		elemento.accionDeColicion()
+  	})
+	
+ 	keyboard.r().onPressDo({ player.disparar() })
+	keyboard.left().onPressDo({player.izquierda()})
+	keyboard.right().onPressDo({player.derecha()})
+	
+ 	game.start()
 }
