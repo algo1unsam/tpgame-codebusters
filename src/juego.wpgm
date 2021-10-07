@@ -1,14 +1,15 @@
 import wollok.game.*
 import player.*
 import portal.*
-
+import box.*
 program juego {
 	game.title("El juego de la papa")
 	
 	game.height(11)
 	game.width(11)
 	game.ground("ground.png")
-	
+	game.addVisual(new Box())
+
 	game.addVisualCharacter(player) 	
 	
 	const portal1=new ParejaPortales(position=game.at(0,1),position2=game.at(9,9))
@@ -21,6 +22,8 @@ program juego {
  	keyboard.r().onPressDo({ player.disparar() })
 	keyboard.left().onPressDo({player.izquierda()})
 	keyboard.right().onPressDo({player.derecha()})
+	keyboard.up().onPressDo({player.arriba()})
+	keyboard.down().onPressDo({player.abajo()})
 	
  	game.start()
 }

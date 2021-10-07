@@ -2,40 +2,70 @@ import wollok.game.*
 
 object player {
 	var property position = game.center()
-	var property image = "player.png"
-	var derecha=true
+	var property image = "playerFront.png"
+	var direccion=0//0 Abajo, 1 Derecha, 2 izquierda, 3 Arriba
+	var vidas=100
 	
-	method disparar(){
-		const proyectil1=new Proyectil(derecha=derecha,position=position)
-		game.addVisual(proyectil1)
-		game.onTick(200, "disparo", { proyectil1.moverse() })
-		game.onTick(5000, "desaparecer", { game.removeVisual(proyectil1) })
+	method bajarVidas(){
+		
 	}
+	
+	method subirVidas(){
+		vidas=vidas+1
+	}
+	
 	method derecha(){
-		derecha=true
-		self.image("player.png") 
+		direccion=1
+		self.image("playerRight.png") 
 	}
 	method izquierda(){
-		derecha=false
-		self.image("playerIzq.png") 
+		direccion=2
+		self.image("playerLeft.png") 
+	}
+	method arriba(){
+		direccion=3
+		self.image("playerBack.png") 
+	}
+	method abajo(){
+		direccion=0
+		self.image("playerFront.png") 
+	}
+	
+	method disparar(){
+		const proyectil=new Proyectil(direccion=direccion,position=position)
+		game.addVisual(proyectil)
+		game.onTick(200, "disparo", { proyectil.moverse() })
+		game.whenCollideDo(proyectil, { elemento => 
+		elemento.bajarVidas()
+  	})
 	}
 }
 
 class Proyectil{
 	var property position
-	var property derecha		
-	var property image="pepita.png"
+	var property direccion		
+	var property image="proyectil.png"
+	var movimientos=0
+	const maxMovimientos=3
 	method accionDeColicion(){
 		
 	}
 	
-	
 	method moverse(){
-		if(derecha){
+		if(direccion==0){
+			self.position(self.position().down(1))
+		}else if(direccion==1){
 			self.position(self.position().right(1))
-		}else{
+		}else if(direccion==2){
 			self.position(self.position().left(1))
+		}else if(direccion==3){
+			self.position(self.position().up(1))
 		}
-		game.onTick(200, "disparo", { self.moverse() })
+		if(movimientos<maxMovimientos){
+			movimientos=movimientos+1
+		}else{
+			game.removeTickEvent("disparo")
+			game.removeVisual(self)
+		}
 	}
 }
