@@ -53,7 +53,7 @@ class Proyectil{
 	
 	method moverse(){
 		if(direccion==0){
-			self.position(self.position().down(1))
+			self.position(self.position().up(-1))
 		}else if(direccion==1){
 			self.position(self.position().right(1))
 		}else if(direccion==2){
