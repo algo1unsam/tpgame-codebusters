@@ -9,6 +9,7 @@ program juego {
 	game.width(11)
 	game.ground("ground.png")
 	game.addVisual(new Box())
+	game.addVisual(new Enemigo())
 
 	game.addVisualCharacter(player) 	
 	

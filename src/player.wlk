@@ -4,6 +4,7 @@ object player {
 	var property position = game.center()
 	var property image = "playerFront.png"
 	var direccion=0//0 Abajo, 1 Derecha, 2 izquierda, 3 Arriba
+	//reemplazar numeros por objetos
 	var vidas=100
 	
 	method bajarVidas(){
@@ -30,14 +31,16 @@ object player {
 		direccion=0
 		self.image("playerFront.png") 
 	}
+	//un solo metodo para direccionar
+	method moverseHacia(unaDireccion){
+		//hacer lo mismo que los 4 metodos de arriba
+	}
 	
 	method disparar(){
 		const proyectil=new Proyectil(direccion=direccion,position=position)
 		game.addVisual(proyectil)
 		game.onTick(200, "disparo", { proyectil.moverse() })
-		game.whenCollideDo(proyectil, { elemento => 
-		elemento.bajarVidas()
-  	})
+		game.onCollideDo(proyectil, { target => target.bajarVidas() } ) //proyectil.atacar(target)
 	}
 }
 
@@ -46,13 +49,15 @@ class Proyectil{
 	var property direccion		
 	var property image="proyectil.png"
 	var movimientos=0
-	const maxMovimientos=3
+	const maxRango=3
 	method accionDeColicion(){
 		
 	}
-	
+	method atacar(target){ 
+		//bajar vidas, eliminarse 
+	}
 	method moverse(){
-		if(direccion==0){
+		if(direccion==0){ //sacar este if por polimorfismo (usar direcciones polimorficamente)
 			self.position(self.position().up(-1))
 		}else if(direccion==1){
 			self.position(self.position().right(1))
@@ -61,7 +66,7 @@ class Proyectil{
 		}else if(direccion==3){
 			self.position(self.position().up(1))
 		}
-		if(movimientos<maxMovimientos){
+		if(movimientos < maxRango){
 			movimientos=movimientos+1
 		}else{
 			game.removeTickEvent("disparo")
