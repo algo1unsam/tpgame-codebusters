@@ -38,18 +38,19 @@ class Proyectil{
 		
 	}
 	method atacar(){ 
-		//.forEach({ elementoEnLaPosicion => elementoEnLaPosicion.bajarVida()})
-		console.println(game.colliders(self))
+		//
+		game.colliders(self).forEach({ elementoEnLaPosicion => elementoEnLaPosicion.bajarVidas()})
 	}
 	method moverse(){
 		direccion.moverEnDireccion(self)
 		if(movimientos < maxRango){
 			movimientos=movimientos+1
+			self.atacar()
+			
 		}else{
 			game.removeTickEvent("disparo")
 			game.removeVisual(self)
 		}
-		self.atacar()
 	}
 }
 
