@@ -3,44 +3,28 @@ import wollok.game.*
 object player {
 	var property position = game.center()
 	var property image = "playerFront.png"
-	var direccion=0//0 Abajo, 1 Derecha, 2 izquierda, 3 Arriba
+	var direccion=abajo//0 Abajo, 1 Derecha, 2 izquierda, 3 Arriba
 	//reemplazar numeros por objetos
 	var vidas=100
 	
-	method bajarVidas(){
-		
+	method bajarVidas(danio){
+		vidas=vidas-danio
 	}
 	
 	method subirVidas(){
 		vidas=vidas+1
 	}
 	
-	method derecha(){
-		direccion=1
-		self.image("playerRight.png") 
-	}
-	method izquierda(){
-		direccion=2
-		self.image("playerLeft.png") 
-	}
-	method arriba(){
-		direccion=3
-		self.image("playerBack.png") 
-	}
-	method abajo(){
-		direccion=0
-		self.image("playerFront.png") 
-	}
 	//un solo metodo para direccionar
 	method moverseHacia(unaDireccion){
-		//hacer lo mismo que los 4 metodos de arriba
+		direccion=unaDireccion
+		self.image(direccion.imagen())
 	}
 	
 	method disparar(){
-		const proyectil=new Proyectil(direccion=direccion,position=position)
+		const proyectil=new Proyectil(direccion=direccion,position=direccion.posicionSiSeMueveEnEstaDireccion(self.position()))
 		game.addVisual(proyectil)
 		game.onTick(200, "disparo", { proyectil.moverse() })
-		game.onCollideDo(proyectil, { target => target.bajarVidas() } ) //proyectil.atacar(target)
 	}
 }
 
@@ -50,27 +34,61 @@ class Proyectil{
 	var property image="proyectil.png"
 	var movimientos=0
 	const maxRango=3
-	method accionDeColicion(){
+	method colicionConPlayer(){
 		
 	}
-	method atacar(target){ 
-		//bajar vidas, eliminarse 
+	method atacar(){ 
+		//.forEach({ elementoEnLaPosicion => elementoEnLaPosicion.bajarVida()})
+		console.println(game.colliders(self))
 	}
 	method moverse(){
-		if(direccion==0){ //sacar este if por polimorfismo (usar direcciones polimorficamente)
-			self.position(self.position().up(-1))
-		}else if(direccion==1){
-			self.position(self.position().right(1))
-		}else if(direccion==2){
-			self.position(self.position().left(1))
-		}else if(direccion==3){
-			self.position(self.position().up(1))
-		}
+		direccion.moverEnDireccion(self)
 		if(movimientos < maxRango){
 			movimientos=movimientos+1
 		}else{
 			game.removeTickEvent("disparo")
 			game.removeVisual(self)
 		}
+		self.atacar()
+	}
+}
+
+class Direccion{
+	
+	method moverEnDireccion(objetoAMover){
+		objetoAMover.position(self.posicionSiSeMueveEnEstaDireccion(objetoAMover.position()))
+	}
+	
+	method posicionSiSeMueveEnEstaDireccion(posicion){
+		return posicion.up(1)
+	} 	
+}
+
+object arriba inherits Direccion{
+	method imagen()=("playerBack.png")
+	
+	override method posicionSiSeMueveEnEstaDireccion(posicion){
+		return posicion.up(1)
+	}
+}
+object abajo inherits Direccion{
+	method imagen()=("playerFront.png")
+	
+	override method posicionSiSeMueveEnEstaDireccion(posicion){
+		return posicion.down(1)
+	}
+}
+object derecha inherits Direccion{
+	method imagen()=("playerRight.png") 
+	
+	override method posicionSiSeMueveEnEstaDireccion(posicion){
+		return posicion.right(1)
+	}
+}
+object izquierda inherits Direccion{
+	method imagen()=("playerLeft.png")
+	
+	override method posicionSiSeMueveEnEstaDireccion(posicion){
+		return posicion.left(1)
 	}
 }

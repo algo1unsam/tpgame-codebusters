@@ -1,4 +1,5 @@
 import wollok.game.*
+import player.*
 class Box {
 
 	const x = 0.randomUpTo(game.width()).truncate(0)
@@ -29,7 +30,10 @@ class Enemigo {
 	return vidas > 0
 	}
 	
-	
-	
-	
+	method colicionConPlayer(){
+		self.atacar(player)
+	}
+	method atacar(objetoAATacar){
+		
+	}
 }

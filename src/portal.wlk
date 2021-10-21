@@ -19,7 +19,7 @@ class Portal1{
 	const property position
 	const property position2
 	
-	method accionDeColicion(){
+	method colicionConPlayer(){
 		player.position(position2.up(1))
 	}
 }
@@ -30,7 +30,7 @@ class Portal2{
 	const property position2
 	
 	
-	method accionDeColicion(){
+	method colicionConPlayer(){
 		player.position(position2.down(1))
 	}
 }
