@@ -14,10 +14,11 @@ class Box {
 }
 
 class Enemigo {
-	var property image = "bicho.png"
+	var property image = "playerabajo.png"
 	var vidas=5
+	var direccion = abajo
 	
-	const property position = game.at(4,3) 
+	var property position = game.at(5,5) 
 	
 	method bajarVidas(){
 		if(self.vivo()){
@@ -34,6 +35,55 @@ class Enemigo {
 		self.atacar(player)
 	}
 	method atacar(objetoAATacar){
-		
+		objetoAATacar.bajarVidas(100)
 	}
+	
+	
+	method moverse(unaDireccion){
+		direccion = unaDireccion
+		self.image("player"+ direccion.nombreDireccion() +".png")
+		
+		if(not direccion.proximaPosicionFueraDeLimites(position)){
+		self.position(direccion.posicionSiSeMueveEnEstaDireccion(self.position()))
+			
+		}
+	}
+	
+	method seguirPlayerX(){
+		const xPlayer = player.position().x()
+		const yPlayer = player.position().y()
+		const xEnemy = self.cuantoEnX(xPlayer)
+	//	const yEnemy = self.cuantoEnY(xPlayer)
+		console.println(xEnemy)
+	//	console.println(yEnemy)
+
+		return xEnemy
+	}
+	method seguirPlayerY(){
+		const xPlayer = player.position().x()
+		const yPlayer = player.position().y()
+	//	const xEnemy = self.cuantoEnX(xPlayer)
+		const yEnemy = self.cuantoEnY(xPlayer)
+	//	console.println(xEnemy)
+		console.println(yEnemy)
+
+		return yEnemy
+	}
+	
+	method cuantoEnX(xPlayer) {
+		if(self.esMayorEnX(xPlayer)){
+			return derecha
+		}else return izquierda
+	}
+	
+	method cuantoEnY(xPlayer) {
+		if(self.esMayorEnY(xPlayer)){
+			return arriba
+		}else return abajo
+	}
+	
+	method esMayorEnX(xPlayer) = player.position().x() > self.position().x()
+	method esMayorEnY(xPlayer) = player.position().y() > self.position().y()
+	
+	
 }

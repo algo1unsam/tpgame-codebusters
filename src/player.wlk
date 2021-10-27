@@ -2,7 +2,7 @@ import wollok.game.*
 
 object player {
 	var property position = game.center()
-	var property image = "playerFront.png"
+	var property image = "playerabajo.png"
 	var direccion=abajo//0 Abajo, 1 Derecha, 2 izquierda, 3 Arriba
 	//reemplazar numeros por objetos
 	var vidas=100
@@ -18,8 +18,10 @@ object player {
 	//un solo metodo para direccionar
 	method moverseHacia(unaDireccion){
 		direccion=unaDireccion
-		self.image(direccion.imagen())
+		self.image("player"+ direccion.nombreDireccion() +".png")
+		console.println(direccion)
 	}
+
 	
 	method disparar(){
 		const proyectil=new Proyectil(direccion=direccion,position=direccion.posicionSiSeMueveEnEstaDireccion(self.position()))
@@ -37,9 +39,22 @@ class Proyectil{
 	method colicionConPlayer(){
 		
 	}
+	
+	method objetosEnLaMismaPosicion() = game.colliders(self)
+	
+	method tieneObjetosEnLaMismaPosicion() = not self.objetosEnLaMismaPosicion().isEmpty() 
+	
+	method terminar() {
+		game.removeTickEvent("disparo")
+		game.removeVisual(self)
+	} 
+	
 	method atacar(){ 
 		//
-		game.colliders(self).forEach({ elementoEnLaPosicion => elementoEnLaPosicion.bajarVidas()})
+		if(self.tieneObjetosEnLaMismaPosicion()){
+		self.objetosEnLaMismaPosicion().forEach({ elementoEnLaPosicion => elementoEnLaPosicion.bajarVidas()})
+		self.terminar()			
+		}
 	}
 	method moverse(){
 		direccion.moverEnDireccion(self)
@@ -48,10 +63,10 @@ class Proyectil{
 			self.atacar()
 			
 		}else{
-			game.removeTickEvent("disparo")
-			game.removeVisual(self)
+			self.terminar()
 		}
 	}
+	method bajarVidas(){}
 }
 
 class Direccion{
@@ -60,36 +75,55 @@ class Direccion{
 		objetoAMover.position(self.posicionSiSeMueveEnEstaDireccion(objetoAMover.position()))
 	}
 	
+	method proximaPosicionFueraDeLimites(posicion){
+		if(self.posicionSiSeMueveEnEstaDireccion(posicion).y() > game.height()){
+			return true
+		}else return self.posicionSiSeMueveEnEstaDireccion(posicion).y() < 0
+	}
+	
 	method posicionSiSeMueveEnEstaDireccion(posicion){
 		return posicion.up(1)
 	} 	
 }
 
 object arriba inherits Direccion{
-	method imagen()=("playerBack.png")
+	
 	
 	override method posicionSiSeMueveEnEstaDireccion(posicion){
 		return posicion.up(1)
 	}
+	
+	method nombreDireccion(){
+		return "arriba"
+	}
 }
 object abajo inherits Direccion{
-	method imagen()=("playerFront.png")
+
 	
 	override method posicionSiSeMueveEnEstaDireccion(posicion){
 		return posicion.down(1)
 	}
+	method nombreDireccion(){
+		return "abajo"
+	}
 }
 object derecha inherits Direccion{
-	method imagen()=("playerRight.png") 
+	 
 	
 	override method posicionSiSeMueveEnEstaDireccion(posicion){
 		return posicion.right(1)
 	}
+	method nombreDireccion(){
+		return "derecha"
+	}
 }
 object izquierda inherits Direccion{
-	method imagen()=("playerLeft.png")
+
 	
 	override method posicionSiSeMueveEnEstaDireccion(posicion){
 		return posicion.left(1)
+	}
+	method nombreDireccion(){
+		return "izquierda"
 	}
 }

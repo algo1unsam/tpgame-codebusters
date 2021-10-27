@@ -22,6 +22,7 @@ class Portal1{
 	method colicionConPlayer(){
 		player.position(position2.up(1))
 	}
+	method bajarVidas(){}
 }
 
 class Portal2{
@@ -33,5 +34,6 @@ class Portal2{
 	method colicionConPlayer(){
 		player.position(position2.down(1))
 	}
+	method bajarVidas(){}
 }
 
