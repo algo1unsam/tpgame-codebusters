@@ -7,9 +7,8 @@ object nivel {
 	method crearEnemigo(){
 		const enemigoNuevo = new Enemigo()
 		game.addVisual(enemigoNuevo)
-		game.onTick(1000,"moverse",{enemigoNuevo.moverse(enemigoNuevo.seguirPlayerX())})
-		game.onTick(1000,"moverse",{enemigoNuevo.moverse(enemigoNuevo.seguirPlayerY())})
-		game.onTick(1000,"juntoAlPlayer",{enemigoNuevo.colicionConPlayer()})
+		game.onTick(1000,"moverse",{enemigoNuevo.seguirPlayer()})
+		
 	}
 	
 /*

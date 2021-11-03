@@ -1,5 +1,6 @@
 import wollok.game.*
 import player.*
+import direcciones.*
 class Box {
 
 	const x = 0.randomUpTo(game.width()).truncate(0)
@@ -17,58 +18,91 @@ class Enemigo {
 	var property image = "playerabajo.png"
 	var vidas=5
 	var direccion = abajo
+	const x = 0.randomUpTo(game.width()).truncate(0)
+    const y = 0.randomUpTo(game.height()).truncate(0) 
+    var property position = game.at(x,y) 
 	
-	var property position = game.at(5,5) 
-	
-	method bajarVidas(){
-		if(self.vivo()){
-			vidas = vidas- 1
+	method bajarVidas(danio){
+		if(self.danioMayorQueVida(danio)){
+			game.removeVisual(self)
+			
+		}else{ 
+			vidas = vidas- danio
 			console.println(vidas)
-		}else{ game.removeVisual(self) }
+		}
 	}
 	
-	method vivo(){
-	return vidas > 0
+	method colicionConPlayer(){}
+	
+	method danioMayorQueVida(danio) = danio > vidas
+	
+	
+	method estaCerca(posicionJugador) =  self.position().distance(posicionJugador) <= 1
+		
+		
+	method cambiarImagenAtaque(){
+		self.image("enemy"+ direccion.nombreDireccion() +"attack.png")
 	}
 	
-	method colicionConPlayer(){
-		self.atacar(player)
+	method cambiarImagenCaminando(direccionxd){
+		self.image("enemy"+ direccionxd.nombreDireccion() +".png")
 	}
+	
 	method atacar(objetoAATacar){
-		objetoAATacar.bajarVidas(100)
+		self.cambiarImagenAtaque()
+		game.schedule(300,{objetoAATacar.bajarVidas(1)})
+		game.schedule(300,{self.cambiarImagenCaminando(direccion)})
 	}
 	
 	
 	method moverse(unaDireccion){
 		direccion = unaDireccion
-		self.image("player"+ direccion.nombreDireccion() +".png")
+		self.cambiarImagenCaminando(direccion)
 		
-		if(not direccion.proximaPosicionFueraDeLimites(position)){
+		if(not direccion.proximaPosicionFueraDeLimites(position) and self.proximaPosVacia(direccion)){	
 		self.position(direccion.posicionSiSeMueveEnEstaDireccion(self.position()))
+		}
+	}
+	
+	method proximaPosVacia(direccionALaQueSeMueve){
+			const proxPos = direccionALaQueSeMueve.posicionSiSeMueveEnEstaDireccion(position)
+			return game.getObjectsIn(proxPos).size() == 0
 			
+	}
+	
+	method seguirPlayer(){
+		
+		if(self.estaCerca(player.position())){
+			self.atacar(player)
+			
+		}else {
+			self.seguirPlayerX()
+			game.schedule(400, {(self.seguirPlayerY())})
 		}
 	}
 	
 	method seguirPlayerX(){
 		const xPlayer = player.position().x()
-		const yPlayer = player.position().y()
-		const xEnemy = self.cuantoEnX(xPlayer)
+	//	const yPlayer = player.position().y()
 	//	const yEnemy = self.cuantoEnY(xPlayer)
-		console.println(xEnemy)
-	//	console.println(yEnemy)
-
-		return xEnemy
+		if(not self.enElMismoX(xPlayer)){
+			self.moverse(self.cuantoEnX(xPlayer))
+		}
 	}
+	
+	method enElMismoX(xPlayer) = self.position().x() == xPlayer
+	
 	method seguirPlayerY(){
-		const xPlayer = player.position().x()
+	///	const xPlayer = player.position().x()
 		const yPlayer = player.position().y()
-	//	const xEnemy = self.cuantoEnX(xPlayer)
-		const yEnemy = self.cuantoEnY(xPlayer)
-	//	console.println(xEnemy)
-		console.println(yEnemy)
-
-		return yEnemy
+		
+		if(not self.enElMismoY(yPlayer)){
+			self.moverse(self.cuantoEnY(yPlayer))
+		}
+		
 	}
+	
+	method enElMismoY(yPlayer) = self.position().y() == yPlayer
 	
 	method cuantoEnX(xPlayer) {
 		if(self.esMayorEnX(xPlayer)){
@@ -76,8 +110,8 @@ class Enemigo {
 		}else return izquierda
 	}
 	
-	method cuantoEnY(xPlayer) {
-		if(self.esMayorEnY(xPlayer)){
+	method cuantoEnY(yPlayer) {
+		if(self.esMayorEnY(yPlayer)){
 			return arriba
 		}else return abajo
 	}
