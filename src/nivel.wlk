@@ -8,7 +8,6 @@ object nivel {
 		const enemigoNuevo = new Enemigo()
 		game.addVisual(enemigoNuevo)
 		game.onTick(1000,"moverse",{enemigoNuevo.seguirPlayer()})
-		
 	}
 	
 /*

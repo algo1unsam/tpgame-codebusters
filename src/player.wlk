@@ -15,10 +15,9 @@ object displayVidas{
 object player {
 	var property position = game.center()
 	var property image = "playerabajo.png"
-	var direccion=abajo//0 Abajo, 1 Derecha, 2 izquierda, 3 Arriba
-	//reemplazar numeros por objetos
+	var direccion=abajo
 	var property vidas=100
-	var property danioMelee = 30
+	var property danioMelee = 5
 	const property proyectiles = []
 	var property limiteProyectiles = 2
 	
@@ -50,7 +49,7 @@ object player {
 	
 	}
 	
-	method puedeSeguirDisparando() = proyectiles.size() < self.limiteProyectiles()
+	method puedeSeguirDisparando() = proyectiles.size() <= self.limiteProyectiles()
 	
 	method disparar(){
 		if(self.puedeSeguirDisparando()){
@@ -87,7 +86,7 @@ class Proyectil{
 	var property position
 	var property direccion		
 	var property image="proyectil.png"
-	const danioProyectil = 100
+	const danioProyectil = 10
 	var movimientos=0
 	const maxRango=3
 	method colicionConPlayer(){
@@ -112,7 +111,6 @@ class Proyectil{
 		}
 	}
 	method moverse(){
-		
 		if(movimientos < maxRango){
 			movimientos=movimientos+1
 			self.atacar()

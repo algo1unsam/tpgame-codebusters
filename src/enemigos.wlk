@@ -16,25 +16,27 @@ class Box {
 
 class Enemigo {
 	var property image = "playerabajo.png"
-	var vidas=5
+	var vidas=100
+	var property text = vidas.toString()
+	var property textColor = "FFFFFF"
 	var direccion = abajo
 	const x = 0.randomUpTo(game.width()).truncate(0)
     const y = 0.randomUpTo(game.height()).truncate(0) 
     var property position = game.at(x,y) 
 	
 	method bajarVidas(danio){
-		if(self.danioMayorQueVida(danio)){
+		if(self.danioMayorOIgualQueVida(danio)){
 			game.removeVisual(self)
-			
+			game.removeTickEvent("moverse")
 		}else{ 
 			vidas = vidas- danio
-			console.println(vidas)
+			self.text(vidas.toString())
 		}
 	}
 	
 	method colicionConPlayer(){}
 	
-	method danioMayorQueVida(danio) = danio > vidas
+	method danioMayorOIgualQueVida(danio) = danio >= vidas
 	
 	
 	method estaCerca(posicionJugador) =  self.position().distance(posicionJugador) <= 1
