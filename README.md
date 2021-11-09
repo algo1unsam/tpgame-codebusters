@@ -21,13 +21,13 @@
 
 ## Historia e instrucciones
 
-La papa es un comico personaje perteneciente a la Pentalogia “Las cronicas de la papa” 
+La papa es un cómico personaje perteneciente a la Pentalogía “Las crónicas de la papa” 
 en el cual se narran sus bizarras aventuras y batallas.
 
-La papa es un ser carismatico, gracioso, dotado  de humor y superpoderes. 
+La papa es un ser carismático, gracioso, dotado  de humor y superpoderes. 
 Dentro del mundo de la papa, la Argentina está gobernada por las fuerzas malignas de 
-una agrupacion llamada "El Terror”. Nuestro heroe tendra que luchar contra sus subditos 
-para librar el pais del mal.
+una agrupacion llamada "El Terror”. Nuestro heroe tendra que luchar contra sus súbditos 
+para librar el país del mal.
 
 El juego se divide en 3 niveles, donde se encuentran enemigos que intentarán golpearte
 o dispararte bolas de fuego. Tendrás que usar tu destreza para esquivar, golpear y
