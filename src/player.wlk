@@ -1,5 +1,6 @@
 import wollok.game.*
 import direcciones.*
+import nivel.*
 
 object displayVidas{
 	const property position = game.at(0,0)
@@ -36,7 +37,7 @@ object player {
 	
 	method morir() {
 		game.removeVisual(self)
-		game.stop()
+		nivelController.gameOver()
 	} 
 	
 	method subirVidas(){
@@ -86,28 +87,29 @@ object player {
 class Proyectil{
 	var property position
 	var property direccion		
-	var property image="proyectil.png"
-	const danioProyectil = 100
 	var movimientos=0
 	const maxRango=3
 	method colicionConPlayer(){
 		
 	}
-	
+	method  image()="proyectil.png"
 	method objetosEnLaMismaPosicion() = game.colliders(self)
 	
 	method tieneObjetosEnLaMismaPosicion() = not self.objetosEnLaMismaPosicion().isEmpty() 
 	
+	method  danioProyectil() = 100
 	method terminar() {
 		game.removeTickEvent("disparo")
 		player.proyectiles().remove(self)
-		game.removeVisual(self)
+		 if(self.estaEntablero() ){
+        game.removeVisual(self)       	
+       }
 	} 
 	
 	method atacar(){ 
 		//
 		if(self.tieneObjetosEnLaMismaPosicion()){
-		self.objetosEnLaMismaPosicion().forEach({ elementoEnLaPosicion => elementoEnLaPosicion.bajarVidas(danioProyectil)})
+		self.objetosEnLaMismaPosicion().forEach({ elementoEnLaPosicion => elementoEnLaPosicion.bajarVidas(self.danioProyectil())})
 		self.terminar()			
 		}
 	}
@@ -123,5 +125,7 @@ class Proyectil{
 		}
 	}
 	method bajarVidas(da){}
+	
+	method estaEntablero()= game.allVisuals().contains(self)
 }
 

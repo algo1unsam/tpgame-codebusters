@@ -6,33 +6,6 @@ import nivel.*
 import direcciones.*
 
 program juego {
-	game.title("El juego de la papa")
-	
-	game.height(11)
-	game.width(11)
-	game.ground("floor.png")
-//	game.addVisual(new Box())
-	
-	nivel.crearEnemigo()
-	nivel.crearEnemigo()
-	nivel.crearEnemigo()
-
-	game.addVisualCharacter(player) 	
-	game.addVisual(displayVidas)
-	
-	const portal1=new ParejaPortales(position=game.at(0,1),position2=game.at(9,9))
-	portal1.crearPortales()
-	
-	game.whenCollideDo(player, { elemento => 
-		elemento.colicionConPlayer()
-  	})
-	
- 	keyboard.z().onPressDo({ player.disparar() })
- 	keyboard.x().onPressDo({ player.ataqueMelee() })
-	keyboard.left().onPressDo({player.moverseHacia(izquierda)})
-	keyboard.right().onPressDo({player.moverseHacia(derecha)})
-	keyboard.up().onPressDo({player.moverseHacia(arriba)})
-	keyboard.down().onPressDo({player.moverseHacia(abajo)})
-	
+	starteo.iniciar()
  	game.start()
 }
