@@ -7,6 +7,10 @@
 - Rodriguez Yucare, Adán 
 
 ## Capturas
+![fondo-principal](https://user-images.githubusercontent.com/88340763/141022838-9576d1aa-7de4-4468-be5b-bbab3837b8c2.jpg)
+
+![image](https://user-images.githubusercontent.com/88340763/141022874-e3182405-8398-44ff-80db-e81b624fbba3.png)
+
 
 ![image](https://user-images.githubusercontent.com/88340763/141021210-093c89b2-b7b4-49b1-a11f-d5742bc65a05.png)
 
