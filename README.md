@@ -19,7 +19,7 @@
 ![image](https://user-images.githubusercontent.com/88340763/141021210-093c89b2-b7b4-49b1-a11f-d5742bc65a05.png)
 
 
-## Reglas de Juego / Instrucciones
+## Historia e instrucciones
 
 La papa es un comico personaje perteneciente a la Pentalogia “Las cronicas de la papa” 
 en el cual se narran sus bizarras aventuras y batallas.
