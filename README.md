@@ -11,7 +11,7 @@
 
 <details> 
   <summary>Diseño de La papa en HD </summary>
-  ![image](https://user-images.githubusercontent.com/88340763/141022874-e3182405-8398-44ff-80db-e81b624fbba3.png)
+     https://user-images.githubusercontent.com/88340763/141022874-e3182405-8398-44ff-80db-e81b624fbba3.png
 </details>
 
 
