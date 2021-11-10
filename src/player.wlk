@@ -5,9 +5,8 @@ import nivel.*
 object displayVidas{
 	const property position = game.at(0,0)
 	var property image = "corazon.png"
-	var property text = player.vidas().toString()
 	var property textColor = "FFFFFF"
-	
+	method text() = player.vidas().toString()
 	method colicionConPlayer(){}
 	method bajarVidas(parametro){}
 }
@@ -23,7 +22,6 @@ object player {
 	
 	method bajarVidas(danio){
 		self.vidas(self.vidas() -danio) 
-		displayVidas.text(self.vidas().toString())
 		if(self.estaMuerto()){
 			self.morir()
 		}
@@ -52,13 +50,15 @@ object player {
 	method puedeSeguirDisparando() = proyectiles.size() < self.limiteProyectiles()
 	
 	method disparar(){
-		if(self.puedeSeguirDisparando()){
+		if(not self.puedeSeguirDisparando()){
+			self.error("No tengo energía")
+		}
 			const proyectil=new Proyectil(numeroDeProyectil=proyectiles.size().toString(),direccion=direccion,position=direccion.posicionSiSeMueveEnEstaDireccion(self.position()))
 			game.addVisual(proyectil)
 			game.onTick(200, "disparo"+proyectiles.size().toString(), { proyectil.moverse() })
 			proyectiles.add(proyectil)
 			game.sound("disparoPlayer.mp3").play()
-		}
+		
 	}
 	
 	method ataqueMelee(){
