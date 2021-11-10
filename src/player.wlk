@@ -6,20 +6,18 @@ object displayVidas{
 	const property position = game.at(0,0)
 	var property image = "corazon.png"
 	var property text = player.vidas().toString()
+	var property textColor = "FFFFFF"
 	
 	method colicionConPlayer(){}
-	method bajarVidas(d){}
+	method bajarVidas(parametro){}
 }
-
-
 
 object player {
 	var property position = game.center()
 	var property image = "playerabajo.png"
-	var direccion=abajo//0 Abajo, 1 Derecha, 2 izquierda, 3 Arriba
-	//reemplazar numeros por objetos
+	var direccion=abajo
 	var property vidas=100
-	var property danioMelee = 30
+	var property danioMelee = 16
 	const property proyectiles = []
 	var property limiteProyectiles = 2
 	
@@ -37,14 +35,14 @@ object player {
 	
 	method morir() {
 		game.removeVisual(self)
-		nivelController.gameOver()
+		game.sound("muerte.mp3").play()
+		game.schedule(2500,{nivelController.gameOver()})
 	} 
 	
 	method subirVidas(){
 		vidas=vidas+1
 	}
 	
-	//un solo metodo para direccionar
 	method moverseHacia(unaDireccion){
 		direccion=unaDireccion
 		self.cambiarImagenCaminando(direccion)
@@ -55,12 +53,12 @@ object player {
 	
 	method disparar(){
 		if(self.puedeSeguirDisparando()){
-			const proyectil=new Proyectil(direccion=direccion,position=direccion.posicionSiSeMueveEnEstaDireccion(self.position()))
+			const proyectil=new Proyectil(numeroDeProyectil=proyectiles.size().toString(),direccion=direccion,position=direccion.posicionSiSeMueveEnEstaDireccion(self.position()))
 			game.addVisual(proyectil)
-			game.onTick(200, "disparo", { proyectil.moverse() })
+			game.onTick(200, "disparo"+proyectiles.size().toString(), { proyectil.moverse() })
 			proyectiles.add(proyectil)
+			game.sound("disparoPlayer.mp3").play()
 		}
-		
 	}
 	
 	method ataqueMelee(){
@@ -70,6 +68,7 @@ object player {
 		game.schedule(300,{self.cambiarImagenCaminando(direccion)})
 		objetosEnPosQueMira.forEach({ o => o.bajarVidas(danioMelee)})
 		game.colliders(self).forEach({ o => o.bajarVidas(danioMelee)})
+		game.sound("punch.mp3").play()
 	}
 	
 	method cambiarImagenAtaque(){
@@ -79,16 +78,16 @@ object player {
 	method cambiarImagenCaminando(direccionxd){
 		self.image("player"+ direccionxd.nombreDireccion() +".png")
 	}
-	
-	
-	
 }
 
 class Proyectil{
+	const numeroDeProyectil=0
 	var property position
 	var property direccion		
 	var movimientos=0
 	const maxRango=3
+	const danioProyectil=4
+	
 	method colicionConPlayer(){
 		
 	}
@@ -97,9 +96,9 @@ class Proyectil{
 	
 	method tieneObjetosEnLaMismaPosicion() = not self.objetosEnLaMismaPosicion().isEmpty() 
 	
-	method  danioProyectil() = 100
+	method  danioProyectil() = danioProyectil
 	method terminar() {
-		game.removeTickEvent("disparo")
+		game.removeTickEvent("disparo"+numeroDeProyectil)
 		player.proyectiles().remove(self)
 		 if(self.estaEntablero() ){
         game.removeVisual(self)       	
@@ -124,7 +123,7 @@ class Proyectil{
 			self.terminar()
 		}
 	}
-	method bajarVidas(da){}
+	method bajarVidas(a){}
 	
 	method estaEntablero()= game.allVisuals().contains(self)
 }
