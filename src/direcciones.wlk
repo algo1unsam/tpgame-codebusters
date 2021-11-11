@@ -11,12 +11,14 @@ class Direccion{
 	}
 	
 	method proximaPosicionFueraDeLimites(posicion){
-		return (self.posicionSiSeMueveEnEstaDireccion(posicion).y() > game.height())
-		or
-		self.posicionSiSeMueveEnEstaDireccion(posicion).y() < 0
+		if(self.posicionSiSeMueveEnEstaDireccion(posicion).y() > game.height()){
+			return true
+		}else return self.posicionSiSeMueveEnEstaDireccion(posicion).y() < 0
 	}
 	
-	method posicionSiSeMueveEnEstaDireccion(posicion)
+	method posicionSiSeMueveEnEstaDireccion(posicion){
+		return posicion.up(1)
+	} 	
 }
 
 object arriba inherits Direccion{
