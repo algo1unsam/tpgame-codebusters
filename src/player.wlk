@@ -19,7 +19,7 @@ object player {
 	var property vidas=100
 	var property danioMelee = 16
 	const property proyectiles = []
-	var property limiteProyectiles = 2
+	var property limiteProyectiles = 1
 	
 	method bajarVidas(danio){
 		self.vidas(self.vidas() -danio) 
